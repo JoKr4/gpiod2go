@@ -20,10 +20,10 @@ func NewLineConfig() (*lineConfig, error) {
 
 func (lc *lineConfig) ApplyLineSettingsForSingleOffset(ls *lineSettings) error {
 
-	var offsetsC C.uint = ls.offset
+	var offsetsC C.uint = C.uint(ls.offset)
 	var numOffsetsC C.size_t = 1
 
-	var resultC C.int = gpiod_line_config_add_line_settings(
+	var resultC C.int = C.gpiod_line_config_add_line_settings(
 		lc.nativeRef,
 		&offsetsC,
 		numOffsetsC,
