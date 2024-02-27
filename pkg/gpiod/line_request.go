@@ -12,7 +12,7 @@ func newLineRequest(d *device, lc *lineConfig) (*lineRequest, error) {
 
 	var nativeRef *C.struct_gpiod_line_request = C.gpiod_chip_request_lines(
 		d.nativeRef,
-		C.NULL, /* default request config*/
+		0, /* NULL / default request config*/
 		lc.nativeRef,
 	)
 	if nativeRef == nil {
@@ -37,8 +37,8 @@ func lineRequestSetValueForSingleOffset(d *device, lc *lineConfig) error {
 
 	var resultC C.int = C.gpiod_line_request_set_value(
 		req.nativeRef,
-		lc.lineSet.offset,
-		lc.lineSet.value,
+		C.uint(lc.lineSet.offset),
+		C.enum_gpiod_line_value(lc.lineSet.value),
 	)
 	if resultC == C.int(-1) {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_request_set_value")
