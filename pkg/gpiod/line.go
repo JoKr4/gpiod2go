@@ -11,7 +11,7 @@ type lineSettings struct {
 	value     lineValue
 }
 
-type lineDirection C.uint32
+type lineDirection C.uint
 
 const (
 	lineDirectionAsIs   lineDirection = C.GPIOD_LINE_DIRECTION_AS_IS
@@ -19,7 +19,7 @@ const (
 	lineDirectionOutput lineDirection = C.GPIOD_LINE_DIRECTION_OUTPUT
 )
 
-type lineValue C.int32
+type lineValue C.int
 
 const (
 	lineValueError    lineValue = C.GPIOD_LINE_VALUE_ERROR
