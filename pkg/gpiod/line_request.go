@@ -5,7 +5,7 @@ import "C"
 import "fmt"
 
 type lineRequest struct {
-	nativeRef *C.gpiod_line_request
+	nativeRef *C.struct_gpiod_line_request
 }
 
 func newLineRequest(d *device, lc *lineConfig) (*lineRequest, error) {
