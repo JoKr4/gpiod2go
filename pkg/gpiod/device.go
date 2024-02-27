@@ -3,7 +3,10 @@ package gpiod
 // #include <gpiod.h>
 // #include <stdlib.h>
 import "C"
-import "fmt"
+import (
+	"fmt"
+	"unsafe"
+)
 
 type device struct {
 	path      string
@@ -18,7 +21,7 @@ func NewDevice(path string) *device {
 
 func (d *device) Open() error {
 	charC := C.CString(d.path)
-	defer C.free(charC)
+	defer C.free(unsafe.Pointer(charC))
 	structC := C.gpiod_chip_open(charC)
 	if structC == C.NULL {
 		return fmt.Errorf("%s failed: NULL returned", "gpiod_chip_open")
