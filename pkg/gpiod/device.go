@@ -2,13 +2,12 @@ package gpiod
 
 // #include <gpiod.h>
 // #include <stdlib.h>
-// typedef struct C.gpiod_chip gpiod_chip_t;
 import "C"
 import "fmt"
 
 type device struct {
 	path      string
-	nativeRef *C.gpiod_chip_t
+	nativeRef *C.struct_gpiod_chip
 }
 
 func NewDevice(path string) *device {
