@@ -6,6 +6,7 @@ import "fmt"
 
 type lineConfig struct {
 	nativeRef *C.struct_gpiod_line_config
+	lineSet   *lineSettings
 }
 
 func NewLineConfig() (*lineConfig, error) {
@@ -33,6 +34,7 @@ func (lc *lineConfig) ApplyLineSettingsForSingleOffset(ls *lineSettings) error {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_config_add_line_settings")
 	}
 	if resultC == C.int(0) {
+		lc.lineSet = ls
 		return nil
 	}
 	return fmt.Errorf("%s returned something unexpected", "gpiod_line_config_add_line_settings")

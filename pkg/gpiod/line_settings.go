@@ -69,16 +69,6 @@ func (ls *lineSettings) SetOutputValue(value lineValue) error {
 		return fmt.Errorf("%s returned something unexpected", "gpiod_line_settings_set_output_value")
 	}
 
-	config, err := NewLineConfig()
-	if err != nil {
-		return err
-	}
-	defer config.Free()
-
-	err = config.ApplyLineSettingsForSingleOffset(ls)
-	if err != nil {
-		return err
-	}
 	return nil
 }
 

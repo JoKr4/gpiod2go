@@ -57,5 +57,26 @@ func (d *device) AddLine(offset uint, direction lineDirection) error {
 func (d *device) SetLineValue(offset uint, value lineValue) error {
 
 	// TODO catch if offset not found
-	return d.lineSet[offset].SetOutputValue(value)
+	err := d.lineSet[offset].SetOutputValue(value)
+	if err != nil {
+		return err
+	}
+
+	config, err := NewLineConfig()
+	if err != nil {
+		return err
+	}
+	defer config.Free()
+
+	err = config.ApplyLineSettingsForSingleOffset(d.lineSet[offset])
+	if err != nil {
+		return err
+	}
+
+	err = lineRequestSetValueForSingleOffset(d, config)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
