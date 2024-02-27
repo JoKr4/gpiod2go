@@ -65,11 +65,21 @@ func (ls *lineSettings) SetOutputValue(value lineValue) error {
 	)
 	if resultC == C.int(-1) {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_settings_set_output_value")
+	} else if resultC != C.int(0) {
+		return fmt.Errorf("%s returned something unexpected", "gpiod_line_settings_set_output_value")
 	}
-	if resultC == C.int(0) {
-		return nil
+
+	config, err := NewLineConfig()
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("%s returned something unexpected", "gpiod_line_settings_set_output_value")
+	defer config.Free()
+
+	err = config.ApplyLineSettingsForSingleOffset(ls)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (ls *lineSettings) Free() {
