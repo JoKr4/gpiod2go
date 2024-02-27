@@ -1,6 +1,7 @@
 package gpiod
 
-//#include <stdlib.h>
+// #include <gpiod.h>
+// #include <stdlib.h>
 import "C"
 import "fmt"
 
