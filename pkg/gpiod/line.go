@@ -5,7 +5,7 @@ import "C"
 import "fmt"
 
 type lineSettings struct {
-	nativeRef *C.gpiod_line_settings
+	nativeRef *C.struct_gpiod_line_settings
 	offset    int
 	direction lineDirection
 	value     lineValue
@@ -28,7 +28,7 @@ const (
 )
 
 func NewLineSettings(offset uint, direction lineDirection, value lineValue) (*lineSettings, error) {
-	var nativeRef *C.gpiod_line_settings = C.gpiod_line_settings_new()
+	var nativeRef *C.struct_gpiod_line_settings = C.gpiod_line_settings_new()
 	if nativeRef == nil {
 		return nil, fmt.Errorf("%s failed: NULL returned", "gpiod_line_settings_new")
 	}
@@ -42,7 +42,7 @@ func NewLineSettings(offset uint, direction lineDirection, value lineValue) (*li
 func (ls *lineSettings) SetDirection(direction lineDirection) error {
 	var resultC C.int = C.gpiod_line_settings_set_direction(
 		ls.nativeRef,
-		C.gpiod_line_direction(direction),
+		C.int(direction),
 	)
 	if resultC == C.int(-1) {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_settings_set_direction")
@@ -57,7 +57,7 @@ func (ls *lineSettings) SetDirection(direction lineDirection) error {
 func (ls *lineSettings) SetOutputValue(value lineValue) error {
 	var resultC C.int = C.gpiod_line_settings_set_output_value(
 		ls.nativeRef,
-		C.gpiod_line_value(value),
+		C.int(value),
 	)
 	if resultC == C.int(-1) {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_settings_set_output_value")
