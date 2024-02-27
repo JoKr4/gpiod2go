@@ -1,6 +1,6 @@
 package gpiod
 
-// #cgo pkg-config: gpiod
+// #cgo pkg-config: libgpiod
 // #include <gpiod.h>
 import "C"
 
