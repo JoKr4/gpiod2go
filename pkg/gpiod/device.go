@@ -31,3 +31,7 @@ func (d *device) Open() error {
 	d.nativeRef = nativeRef
 	return nil
 }
+
+func (d *device) Close() {
+	C.gpiod_chip_close(d.nativeRef)
+}
