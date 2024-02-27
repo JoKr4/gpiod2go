@@ -1,5 +1,7 @@
 package gpiod
 
+// #include <gpiod.h>
+import "C"
 import "fmt"
 
 type lineConfig struct {
