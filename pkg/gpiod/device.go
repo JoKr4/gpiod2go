@@ -23,7 +23,9 @@ func (d *device) Open() error {
 	charC := C.CString(d.path)
 	defer C.free(unsafe.Pointer(charC))
 	var nativeRef *C.struct_gpiod_chip = C.gpiod_chip_open(charC)
-	if nativeRef == 0 {
+
+	// https://stackoverflow.com/questions/56352863/c-null-type-in-cgo
+	if nativeRef == nil {
 		return fmt.Errorf("%s failed: NULL returned", "gpiod_chip_open")
 	}
 	d.nativeRef = nativeRef
