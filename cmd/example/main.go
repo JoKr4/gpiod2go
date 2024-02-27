@@ -10,7 +10,7 @@ func main() {
 	log.Println("gpiod api version is:", gpiod.ApiVersion())
 
 	// devicename according to "gpiodetect"
-	// 'gpiochip0', and '/dev/gpiochip0' all refer to the same chip.
+	// use the full path
 	d := gpiod.NewDevice("/dev/gpiochip0")
 	err := d.Open()
 	if err != nil {
