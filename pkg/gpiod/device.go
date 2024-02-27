@@ -40,7 +40,7 @@ func (d *device) Close() {
 
 func (d *device) AddLine(offset uint, direction lineDirection, value lineValue) error {
 
-	newLine, err := NewLineSettings(offset, direction, value)
+	newLine, err := NewLineSettings(offset)
 	if err != nil {
 		return err
 	}
@@ -48,6 +48,8 @@ func (d *device) AddLine(offset uint, direction lineDirection, value lineValue) 
 	// TODO already added?
 
 	d.lineSet[offset] = newLine
+
+	// TODO set direction and value
 
 	return nil
 }
