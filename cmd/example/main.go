@@ -25,10 +25,14 @@ func main() {
 		log.Println(err)
 		return
 	}
+	log.Println("successfully added line")
 
 	err = d.SetLineValue(22, gpiod.LineValueActive)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+	log.Println("successfully set line value")
+
+	log.Println("all done")
 }
