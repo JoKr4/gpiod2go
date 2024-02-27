@@ -17,7 +17,7 @@ func NewDevice(path string) *device {
 }
 
 func (d *device) Open() error {
-	charC := C.CBytes(d.path)
+	charC := C.CString(d.path)
 	defer C.free(charC)
 	structC := C.gpiod_chip_open((*C.char)(charC))
 	if structC == C.NULL {
