@@ -38,18 +38,21 @@ func (d *device) Close() {
 	C.gpiod_chip_close(d.nativeRef)
 }
 
-func (d *device) AddLine(offset uint, direction lineDirection, value lineValue) error {
+func (d *device) AddLine(offset uint, direction lineDirection) error {
 
-	newLine, err := NewLineSettings(offset)
+	newLine, err := NewLineSettings(offset, direction)
 	if err != nil {
 		return err
 	}
 
 	// TODO already added?
-
 	d.lineSet[offset] = newLine
 
-	// TODO set direction and value
-
 	return nil
+}
+
+func (d *device) SetLineValue(offset uint, value lineValue) error {
+
+	// TODO catch if offset not found
+	return d.lineSet[offset].SetOutputValue(value)
 }

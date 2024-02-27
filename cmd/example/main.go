@@ -14,8 +14,21 @@ func main() {
 	d := gpiod.NewDevice("/dev/gpiochip0")
 	err := d.Open()
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
+		return
 	}
 	defer d.Close()
-	log.Println("success")
+	log.Println("successfully opened")
+
+	err = d.AddLine(22, gpiod.LineDirectionOutput)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	err = d.SetLineValue(22, gpiod.LineValueActive)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }

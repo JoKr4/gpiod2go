@@ -14,30 +14,36 @@ type lineSettings struct {
 type lineDirection uint
 
 const (
-	lineDirectionAsIs   lineDirection = C.GPIOD_LINE_DIRECTION_AS_IS
-	lineDirectionInput  lineDirection = C.GPIOD_LINE_DIRECTION_INPUT
-	lineDirectionOutput lineDirection = C.GPIOD_LINE_DIRECTION_OUTPUT
+	LineDirectionAsIs   lineDirection = C.GPIOD_LINE_DIRECTION_AS_IS
+	LineDirectionInput  lineDirection = C.GPIOD_LINE_DIRECTION_INPUT
+	LineDirectionOutput lineDirection = C.GPIOD_LINE_DIRECTION_OUTPUT
 )
 
 type lineValue int
 
 const (
-	lineValueError    lineValue = C.GPIOD_LINE_VALUE_ERROR
-	lineValueInactive lineValue = C.GPIOD_LINE_VALUE_INACTIVE
-	lineValueActive   lineValue = C.GPIOD_LINE_VALUE_ACTIVE
+	LineValueError    lineValue = C.GPIOD_LINE_VALUE_ERROR
+	LineValueInactive lineValue = C.GPIOD_LINE_VALUE_INACTIVE
+	LineValueActive   lineValue = C.GPIOD_LINE_VALUE_ACTIVE
 )
 
-func NewLineSettings(offset uint) (*lineSettings, error) {
+func NewLineSettings(offset uint, direction lineDirection) (*lineSettings, error) {
 	var nativeRef *C.struct_gpiod_line_settings = C.gpiod_line_settings_new()
 	if nativeRef == nil {
 		return nil, fmt.Errorf("%s failed: NULL returned", "gpiod_line_settings_new")
 	}
-	return &lineSettings{
+	new := lineSettings{
 		nativeRef: nativeRef,
-	}, nil
+		direction: direction,
+	}
+	err := new.setDirection(direction)
+	if err != nil {
+		return nil, err
+	}
+	return &new, nil
 }
 
-func (ls *lineSettings) SetDirection(direction lineDirection) error {
+func (ls *lineSettings) setDirection(direction lineDirection) error {
 	var resultC C.int = C.gpiod_line_settings_set_direction(
 		ls.nativeRef,
 		C.enum_gpiod_line_direction(direction),
