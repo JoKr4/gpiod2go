@@ -7,5 +7,5 @@ import (
 )
 
 func main() {
-	log.Println(gpiod.ApiVersion())
+	log.Println("gpiod api version is:", gpiod.ApiVersion())
 }
