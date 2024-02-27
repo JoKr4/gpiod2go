@@ -2,7 +2,7 @@ package gpiod
 
 // #include <gpiod.h>
 // #include <stdlib.h>
-// typedef struct C.gpiod_chip gpiod_chip_t
+// typedef struct C.gpiod_chip gpiod_chip_t;
 import "C"
 import "fmt"
 
