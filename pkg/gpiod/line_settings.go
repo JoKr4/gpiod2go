@@ -6,7 +6,7 @@ import "fmt"
 
 type lineSettings struct {
 	nativeRef *C.struct_gpiod_line_settings
-	offset    int
+	offset    uint
 	direction lineDirection
 	value     lineValue
 }
@@ -33,6 +33,7 @@ func NewLineSettings(offset uint, direction lineDirection) (*lineSettings, error
 		return nil, fmt.Errorf("%s failed: NULL returned", "gpiod_line_settings_new")
 	}
 	new := lineSettings{
+		offset:    offset,
 		nativeRef: nativeRef,
 		direction: direction,
 	}
