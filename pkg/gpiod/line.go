@@ -11,7 +11,7 @@ type lineSettings struct {
 	value     lineValue
 }
 
-type lineDirection C.uint
+type lineDirection uint
 
 const (
 	lineDirectionAsIs   lineDirection = C.GPIOD_LINE_DIRECTION_AS_IS
@@ -19,7 +19,7 @@ const (
 	lineDirectionOutput lineDirection = C.GPIOD_LINE_DIRECTION_OUTPUT
 )
 
-type lineValue C.int
+type lineValue int
 
 const (
 	lineValueError    lineValue = C.GPIOD_LINE_VALUE_ERROR
@@ -40,7 +40,7 @@ func NewLineSettings(offset uint) (*lineSettings, error) {
 func (ls *lineSettings) SetDirection(direction lineDirection) error {
 	var resultC C.int = C.gpiod_line_settings_set_direction(
 		ls.nativeRef,
-		direction,
+		C.enum_gpiod_line_direction(direction),
 	)
 	if resultC == C.int(-1) {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_settings_set_direction")
@@ -55,7 +55,7 @@ func (ls *lineSettings) SetDirection(direction lineDirection) error {
 func (ls *lineSettings) SetOutputValue(value lineValue) error {
 	var resultC C.int = C.gpiod_line_settings_set_output_value(
 		ls.nativeRef,
-		value,
+		C.enum_gpiod_line_value(value),
 	)
 	if resultC == C.int(-1) {
 		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_settings_set_output_value")
