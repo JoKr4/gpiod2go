@@ -11,11 +11,13 @@ import (
 type device struct {
 	path      string
 	nativeRef *C.struct_gpiod_chip
+	lineSet   map[uint]*lineSettings
 }
 
 func NewDevice(path string) *device {
 	return &device{
-		path: path,
+		path:    path,
+		lineSet: make(map[uint]*lineSettings),
 	}
 }
 
@@ -34,4 +36,18 @@ func (d *device) Open() error {
 
 func (d *device) Close() {
 	C.gpiod_chip_close(d.nativeRef)
+}
+
+func (d *device) AddLine(offset uint, direction lineDirection, value lineValue) error {
+
+	newLine, err := NewLineSettings(offset, direction, value)
+	if err != nil {
+		return err
+	}
+
+	// TODO already added?
+
+	d.lineSet[offset] = newLine
+
+	return nil
 }
