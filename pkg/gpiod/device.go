@@ -19,7 +19,7 @@ func NewDevice(path string) *device {
 func (d *device) Open() error {
 	charC := C.CString(d.path)
 	defer C.free(charC)
-	structC := C.gpiod_chip_open((*C.char)(charC))
+	structC := C.gpiod_chip_open(charC)
 	if structC == C.NULL {
 		return fmt.Errorf("%s failed: NULL returned", "gpiod_chip_open")
 	}
