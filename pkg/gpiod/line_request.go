@@ -12,7 +12,7 @@ func newLineRequest(d *device, lc *lineConfig) (*lineRequest, error) {
 
 	var nativeRef *C.struct_gpiod_line_request = C.gpiod_chip_request_lines(
 		d.nativeRef,
-		0, /* NULL / default request config*/
+		nil, /* NULL / default request config*/
 		lc.nativeRef,
 	)
 	if nativeRef == nil {
