@@ -35,6 +35,9 @@ func (d *device) Open() error {
 }
 
 func (d *device) Close() {
+	for _, l := range d.lineSet {
+		l.Free()
+	}
 	C.gpiod_chip_close(d.nativeRef)
 }
 
