@@ -5,6 +5,17 @@ Link-time dependency is used
 
 Incomplete surely, as I'm only interested in the very simple usecase to switch relais with a RaspberryPi  
 
+## Building
+Assuming you have Linux+go+gcc+pkgconf+libgpiod just do
+```
+cd cmd/example
+CC=gcc go build
+./example
+```
+Note that you need according rights to use /dev/gpiochip*
+
+## More Notes
+
 Here are some of my notes I did while coding:
 
 
