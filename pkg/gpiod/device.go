@@ -80,3 +80,25 @@ func (d *device) SetLineValue(offset uint, value lineValue) error {
 
 	return nil
 }
+
+func (d *device) GetLineValue(offset uint) (lineValue, error) {
+
+	config, err := NewLineConfig()
+	if err != nil {
+		return LineValueError, err
+	}
+	defer config.Free()
+
+	// TODO catch if offset not found
+	err = config.ApplyLineSettingsForSingleOffset(d.lineSet[offset])
+	if err != nil {
+		return LineValueError, err
+	}
+
+	value, err := lineRequestGetValueForSingleOffset(d, config)
+	if err != nil {
+		return LineValueError, err
+	}
+
+	return value, nil
+}
