@@ -48,3 +48,27 @@ func lineRequestSetValueForSingleOffset(d *device, lc *lineConfig) error {
 	}
 	return fmt.Errorf("%s returned something unexpected", "gpiod_line_request_set_value")
 }
+
+func lineRequestGetValueForSingleOffset(d *device, lc *lineConfig) (lineValue, error) {
+
+	req, err := newLineRequest(d, lc)
+	if err != nil {
+		return LineValueError, err
+	}
+	defer req.free()
+
+	var resultC C.enum_gpiod_line_value = C.gpiod_line_request_get_value(
+		req.nativeRef,
+		C.uint(lc.lineSet.offset),
+	)
+	if resultC == C.int(-1) {
+		return LineValueError, fmt.Errorf("%s failed: -1 returned", "gpiod_line_request_get_value")
+	}
+	if resultC == C.GPIOD_LINE_VALUE_ACTIVE {
+		return LineValueActive, nil
+	}
+	if resultC == C.GPIOD_LINE_VALUE_INACTIVE {
+		return LineValueInactive, nil
+	}
+	return LineValueError, fmt.Errorf("%s returned something unexpected", "gpiod_line_request_get_value")
+}
