@@ -1,11 +1,17 @@
-TODO beautify
+# gpiod2go
 
-api findings:
+Golang bindings for libgpiod v2.1.x  
+Link-time dependency is used
+
+Incomplete surely, as I'm only interested in the very simple usecase to switch relais with a RaspberryPi  
+
+Here are some of my notes I did while coding:
+
 
 ```gpiod_line_request_set_value``` takes a 'request' and 'offset' and 'value', but 'request' has 'line_config' which has 'line_setting' which has 'offset' and 'value' again  
 --> why is this repeated?!
 
-TODO consider using the plural version ```gpiod_line_request_set_values``` everytime, even for single offsets
+TODO consider using the plural version ```gpiod_line_request_set_values``` everytime, even for single lines
 
 There is a mixture of 'free' and 'release' suffixes or missing '_new' prefix, e.g.  
 ```gpiod_line_settings_new``` -> ```gpiod_line_settings_free```  
