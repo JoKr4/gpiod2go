@@ -41,7 +41,7 @@ func main() {
 			log.Println(err)
 			return
 		}
-		log.Println("successfully set line value")
+		log.Println("successfully set line value to:", toggleLineValue.String())
 		if toggleLineValue == gpiod.LineValueActive {
 			toggleLineValue = gpiod.LineValueInactive
 		} else {

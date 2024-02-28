@@ -27,6 +27,17 @@ const (
 	LineValueActive   lineValue = C.GPIOD_LINE_VALUE_ACTIVE
 )
 
+func (lv lineValue) String() string {
+	if lv == LineValueError {
+		return "ERROR"
+	} else if lv == LineValueInactive {
+		return "INACTIVE"
+	} else if lv == LineValueError {
+		return "ACTIVE"
+	}
+	return fmt.Sprintf("pseudo-panic: no String() method for %v", lv)
+}
+
 func NewLineSettings(offset uint, direction lineDirection) (*lineSettings, error) {
 	var nativeRef *C.struct_gpiod_line_settings = C.gpiod_line_settings_new()
 	if nativeRef == nil {
