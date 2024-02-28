@@ -35,5 +35,5 @@ func main() {
 		log.Println(err)
 		return
 	}
-	log.Printf("current value of %s is %s\n", useOffset, currentValue.String())
+	log.Printf("current value of %d is %s\n", useOffset, currentValue.String())
 }
