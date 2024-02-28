@@ -61,7 +61,7 @@ func lineRequestGetValueForSingleOffset(d *device, lc *lineConfig) (lineValue, e
 		req.nativeRef,
 		C.uint(lc.lineSet.offset),
 	)
-	if resultC == C.int(-1) {
+	if resultC == C.GPIOD_LINE_VALUE_ERROR {
 		return LineValueError, fmt.Errorf("%s failed: -1 returned", "gpiod_line_request_get_value")
 	}
 	if resultC == C.GPIOD_LINE_VALUE_ACTIVE {
