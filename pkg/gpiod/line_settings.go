@@ -32,7 +32,7 @@ func (lv lineValue) String() string {
 		return "ERROR"
 	} else if lv == LineValueInactive {
 		return "INACTIVE"
-	} else if lv == LineValueError {
+	} else if lv == LineValueActive {
 		return "ACTIVE"
 	}
 	return fmt.Sprintf("pseudo-panic: no String() method for lineValue %d", lv)
