@@ -69,6 +69,7 @@ func (ls *lineSettings) SetOutputValue(value lineValue) error {
 	} else if resultC != C.int(0) {
 		return fmt.Errorf("%s returned something unexpected", "gpiod_line_settings_set_output_value")
 	}
+	ls.value = value
 
 	return nil
 }
