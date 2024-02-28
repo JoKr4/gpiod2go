@@ -23,7 +23,7 @@ func main() {
 	defer d.Close()
 	log.Println("successfully opened device")
 
-	err = d.AddLine(uint(useOffset), gpiod.LineDirectionOutput)
+	err = d.AddLine(uint(useOffset), gpiod.LineDirectionAsIs)
 	if err != nil {
 		log.Println(err)
 		return
