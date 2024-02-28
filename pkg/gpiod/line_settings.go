@@ -35,7 +35,7 @@ func (lv lineValue) String() string {
 	} else if lv == LineValueError {
 		return "ACTIVE"
 	}
-	return fmt.Sprintf("pseudo-panic: no String() method for %v", lv)
+	return fmt.Sprintf("pseudo-panic: no String() method for lineValue %d", lv)
 }
 
 func NewLineSettings(offset uint, direction lineDirection) (*lineSettings, error) {
