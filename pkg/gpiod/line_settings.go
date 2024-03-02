@@ -27,6 +27,10 @@ const (
 	LineValueActive   lineValue = C.GPIOD_LINE_VALUE_ACTIVE
 )
 
+func NewLineDirection(fromC C.enum_gpiod_line_value) lineDirection {
+	return lineDirection(fromC)
+}
+
 func (lv lineValue) String() string {
 	if lv == LineValueError {
 		return "ERROR"
@@ -87,4 +91,23 @@ func (ls *lineSettings) SetOutputValue(value lineValue) error {
 
 func (ls *lineSettings) Free() {
 	C.gpiod_line_settings_free(ls.nativeRef)
+}
+
+func GetDirection(offset uint) error {
+
+	var nativeRef *C.struct_gpiod_line_settings = C.gpiod_line_settings_new()
+	if nativeRef == nil {
+		return nil, fmt.Errorf("%s failed: NULL returned", "gpiod_line_settings_new")
+	}
+	defer C.gpiod_line_settings_free(nativeRef)
+
+	var resultC C.enum_gpiod_line_value = C.gpiod_line_settings_get_direction(nativeRef)
+	if resultC == C.int(-1) {
+		return fmt.Errorf("%s failed: -1 returned", "gpiod_line_settings_get_direction")
+	}
+	if resultC == C.int(0) {
+		ls.direction = direction
+		return nil
+	}
+	return fmt.Errorf("%s returned something unexpected", "gpiod_line_settings_set_direction")
 }

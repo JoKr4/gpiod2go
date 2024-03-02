@@ -102,3 +102,15 @@ func (d *device) GetLineValue(offset uint) (lineValue, error) {
 
 	return value, nil
 }
+
+func (d *device) GetLineDirection(offset uint) (lineDirection, error) {
+
+	var nativeRef *C.struct_gpiod_line_info = C.gpiod_chip_get_line_info(d.nativeRef, C.uint(offset))
+	if nativeRef == nil {
+		return fmt.Errorf("%s failed: NULL returned", "gpiod_chip_get_line_info")
+	}
+
+	var resultC C.enum_gpiod_line_value = C.gpiod_line_settings_get_direction(nativeRef)
+
+	return NewLineDirection(resultC)
+}
