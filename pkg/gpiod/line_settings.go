@@ -43,7 +43,7 @@ func (lv lineValue) String() string {
 	return fmt.Sprintf("pseudo-panic: no String() method for lineValue %d", lv)
 }
 
-func NewLineSettings(offset uint, direction lineDirection) (*lineSettings, error) {
+func NewLineSettings(offset uint) (*lineSettings, error) {
 	var nativeRef *C.struct_gpiod_line_settings = C.gpiod_line_settings_new()
 	if nativeRef == nil {
 		return nil, fmt.Errorf("%s failed: NULL returned", "gpiod_line_settings_new")
@@ -51,16 +51,11 @@ func NewLineSettings(offset uint, direction lineDirection) (*lineSettings, error
 	new := lineSettings{
 		offset:    offset,
 		nativeRef: nativeRef,
-		direction: direction,
-	}
-	err := new.setDirection(direction)
-	if err != nil {
-		return nil, err
 	}
 	return &new, nil
 }
 
-func (ls *lineSettings) setDirection(direction lineDirection) error {
+func (ls *lineSettings) SetDirection(direction lineDirection) error {
 	var resultC C.int = C.gpiod_line_settings_set_direction(
 		ls.nativeRef,
 		C.enum_gpiod_line_direction(direction),

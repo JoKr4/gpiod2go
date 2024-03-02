@@ -24,12 +24,19 @@ func main() {
 	defer d.Close()
 	log.Println("successfully opened device")
 
-	err = d.AddLine(uint(useOffset), gpiod.LineDirectionOutput)
+	err = d.AddLine(uint(useOffset))
 	if err != nil {
 		log.Println(err)
 		return
 	}
+
 	log.Println("successfully added line")
+	err = d.SetLineDirection(uint(useOffset), gpiod.LineDirectionOutput)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.Println("successfully set line direction")
 
 	t := time.NewTicker(3.0 * time.Second)
 	defer t.Stop()

@@ -41,15 +41,26 @@ func (d *device) Close() {
 	C.gpiod_chip_close(d.nativeRef)
 }
 
-func (d *device) AddLine(offset uint, direction lineDirection) error {
+func (d *device) AddLine(offset uint) error {
 
-	newLine, err := NewLineSettings(offset, direction)
+	newLine, err := NewLineSettings(offset)
 	if err != nil {
 		return err
 	}
 
 	// TODO already added?
 	d.lineSet[offset] = newLine
+
+	return nil
+}
+
+func (d *device) SetLineDirection(offset uint, direction lineDirection) error {
+
+	// TODO catch if offset not found
+	err := d.lineSet[offset].SetDirection(direction)
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -104,6 +115,8 @@ func (d *device) GetLineValue(offset uint) (lineValue, error) {
 }
 
 func (d *device) GetLineDirection(offset uint) (lineDirection, error) {
+
+	// TODO or by lineSettings?
 
 	lineRef := C.gpiod_chip_get_line_info(d.nativeRef, C.uint(offset))
 	if lineRef == nil {
