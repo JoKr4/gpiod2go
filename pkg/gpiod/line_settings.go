@@ -8,7 +8,7 @@ type lineSettings struct {
 	nativeRef *C.struct_gpiod_line_settings
 	offset    uint
 	direction lineDirection
-	value     lineValue
+	value     LineValue
 }
 
 type lineDirection uint
@@ -20,19 +20,19 @@ const (
 	LineDirectionUnknown lineDirection = 100
 )
 
-type lineValue int
+type LineValue int
 
 const (
-	LineValueError    lineValue = C.GPIOD_LINE_VALUE_ERROR
-	LineValueInactive lineValue = C.GPIOD_LINE_VALUE_INACTIVE
-	LineValueActive   lineValue = C.GPIOD_LINE_VALUE_ACTIVE
+	LineValueError    LineValue = C.GPIOD_LINE_VALUE_ERROR
+	LineValueInactive LineValue = C.GPIOD_LINE_VALUE_INACTIVE
+	LineValueActive   LineValue = C.GPIOD_LINE_VALUE_ACTIVE
 )
 
 func NewLineDirection(fromC C.enum_gpiod_line_direction) lineDirection {
 	return lineDirection(fromC)
 }
 
-func (lv lineValue) String() string {
+func (lv LineValue) String() string {
 	if lv == LineValueError {
 		return "ERROR"
 	} else if lv == LineValueInactive {
@@ -40,7 +40,7 @@ func (lv lineValue) String() string {
 	} else if lv == LineValueActive {
 		return "ACTIVE"
 	}
-	return fmt.Sprintf("pseudo-panic: no String() method for lineValue %d", lv)
+	return fmt.Sprintf("pseudo-panic: no String() method for LineValue %d", lv)
 }
 
 func NewLineSettings(offset uint) (*lineSettings, error) {
@@ -70,7 +70,7 @@ func (ls *lineSettings) SetDirection(direction lineDirection) error {
 	return fmt.Errorf("%s returned something unexpected", "gpiod_line_settings_set_direction")
 }
 
-func (ls *lineSettings) SetOutputValue(value lineValue) error {
+func (ls *lineSettings) SetOutputValue(value LineValue) error {
 	var resultC C.int = C.gpiod_line_settings_set_output_value(
 		ls.nativeRef,
 		C.enum_gpiod_line_value(value),
