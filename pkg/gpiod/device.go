@@ -127,3 +127,19 @@ func (d *device) GetLineDirection(offset uint) (lineDirection, error) {
 
 	return NewLineDirection(resultC), nil
 }
+
+func (d *device) Toogle(offset uint) error {
+	var newVal lineValue
+	currentVal, err := d.GetLineValue(offset)
+	if err != nil {
+		return err
+	}
+	if currentVal == gpiod.LineValueActive {
+		newVal = gpiod.LineValueInactive
+	} else if currentVal == gpiod.LineValueInactive {
+		newVal = gpiod.LineValueActive
+	} else {
+		return fmt.Errorf("unexpected line value %v to toggle for %d of device %s\n", currentVal, offset, d.path)
+	}
+	return d.SetLineValue(offset, newVal)
+}
