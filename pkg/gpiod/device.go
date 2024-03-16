@@ -134,10 +134,10 @@ func (d *device) Toogle(offset uint) error {
 	if err != nil {
 		return err
 	}
-	if currentVal == gpiod.LineValueActive {
-		newVal = gpiod.LineValueInactive
-	} else if currentVal == gpiod.LineValueInactive {
-		newVal = gpiod.LineValueActive
+	if currentVal == LineValueActive {
+		newVal = LineValueInactive
+	} else if currentVal == LineValueInactive {
+		newVal = LineValueActive
 	} else {
 		return fmt.Errorf("unexpected line value %v to toggle for %d of device %s\n", currentVal, offset, d.path)
 	}
