@@ -8,14 +8,14 @@ import (
 	"unsafe"
 )
 
-type device struct {
+type Device struct {
 	path      string
 	nativeRef *C.struct_gpiod_chip
 	lineSet   map[uint]*lineSettings
 }
 
-func NewDevice(path string) *device {
-	return &device{
+func NewDevice(path string) *Device {
+	return &Device{
 		path:    path,
 		lineSet: make(map[uint]*lineSettings),
 	}
@@ -34,14 +34,14 @@ func (d *device) Open() error {
 	return nil
 }
 
-func (d *device) Close() {
+func (d *Device) Close() {
 	for _, l := range d.lineSet {
 		l.Free()
 	}
 	C.gpiod_chip_close(d.nativeRef)
 }
 
-func (d *device) AddLine(offset uint) error {
+func (d *Device) AddLine(offset uint) error {
 
 	newLine, err := NewLineSettings(offset)
 	if err != nil {
@@ -54,7 +54,7 @@ func (d *device) AddLine(offset uint) error {
 	return nil
 }
 
-func (d *device) SetLineDirection(offset uint, direction lineDirection) error {
+func (d *Device) SetLineDirection(offset uint, direction lineDirection) error {
 
 	// TODO catch if offset not found
 	err := d.lineSet[offset].SetDirection(direction)
@@ -65,7 +65,7 @@ func (d *device) SetLineDirection(offset uint, direction lineDirection) error {
 	return nil
 }
 
-func (d *device) SetLineValue(offset uint, value lineValue) error {
+func (d *Device) SetLineValue(offset uint, value lineValue) error {
 
 	// TODO catch if offset not found
 	err := d.lineSet[offset].SetOutputValue(value)
@@ -92,7 +92,7 @@ func (d *device) SetLineValue(offset uint, value lineValue) error {
 	return nil
 }
 
-func (d *device) GetLineValue(offset uint) (lineValue, error) {
+func (d *Device) GetLineValue(offset uint) (lineValue, error) {
 
 	config, err := NewLineConfig()
 	if err != nil {
@@ -114,7 +114,7 @@ func (d *device) GetLineValue(offset uint) (lineValue, error) {
 	return value, nil
 }
 
-func (d *device) GetLineDirection(offset uint) (lineDirection, error) {
+func (d *Device) GetLineDirection(offset uint) (lineDirection, error) {
 
 	// TODO or by lineSettings?
 
@@ -128,7 +128,7 @@ func (d *device) GetLineDirection(offset uint) (lineDirection, error) {
 	return NewLineDirection(resultC), nil
 }
 
-func (d *device) Toogle(offset uint) error {
+func (d *Device) Toogle(offset uint) error {
 	var newVal lineValue
 	currentVal, err := d.GetLineValue(offset)
 	if err != nil {
