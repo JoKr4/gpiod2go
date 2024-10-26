@@ -21,7 +21,7 @@ func NewDevice(path string) *Device {
 	}
 }
 
-func (d *device) Open() error {
+func (d *Device) Open() error {
 	charC := C.CString(d.path)
 	defer C.free(unsafe.Pointer(charC))
 	var nativeRef *C.struct_gpiod_chip = C.gpiod_chip_open(charC)
