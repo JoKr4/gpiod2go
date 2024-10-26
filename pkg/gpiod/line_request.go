@@ -8,7 +8,7 @@ type lineRequest struct {
 	nativeRef *C.struct_gpiod_line_request
 }
 
-func newLineRequest(d *device, lc *lineConfig) (*lineRequest, error) {
+func newLineRequest(d *Device, lc *lineConfig) (*lineRequest, error) {
 
 	var nativeRef *C.struct_gpiod_line_request = C.gpiod_chip_request_lines(
 		d.nativeRef,
@@ -27,7 +27,7 @@ func (lr *lineRequest) free() {
 	C.gpiod_line_request_release(lr.nativeRef)
 }
 
-func lineRequestSetValueForSingleOffset(d *device, lc *lineConfig) error {
+func lineRequestSetValueForSingleOffset(d *Device, lc *lineConfig) error {
 
 	req, err := newLineRequest(d, lc)
 	if err != nil {
@@ -49,7 +49,7 @@ func lineRequestSetValueForSingleOffset(d *device, lc *lineConfig) error {
 	return fmt.Errorf("%s returned something unexpected", "gpiod_line_request_set_value")
 }
 
-func lineRequestGetValueForSingleOffset(d *device, lc *lineConfig) (lineValue, error) {
+func lineRequestGetValueForSingleOffset(d *Device, lc *lineConfig) (lineValue, error) {
 
 	req, err := newLineRequest(d, lc)
 	if err != nil {
